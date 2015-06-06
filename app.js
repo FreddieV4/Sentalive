@@ -3,10 +3,7 @@
 //------------------------------------------------------------------------------
 // node.js starter application for Bluemix
 //------------------------------------------------------------------------------
-<<<<<<< HEAD
-=======
 // AngelHack Boston 2015
->>>>>>> aa4fe2813cc914eef4df8e2874192216f432bf0f
 
 // This application uses express as it's web server
 // for more info, see: http://expressjs.com
@@ -54,6 +51,3 @@ function compareTime(tweetTime, eventTime)
 }
 
 });
-=======
-});
->>>>>>> aa4fe2813cc914eef4df8e2874192216f432bf0f
