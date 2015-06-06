@@ -3,6 +3,10 @@
 //------------------------------------------------------------------------------
 // node.js starter application for Bluemix
 //------------------------------------------------------------------------------
+<<<<<<< HEAD
+=======
+// AngelHack Boston 2015
+>>>>>>> aa4fe2813cc914eef4df8e2874192216f432bf0f
 
 // This application uses express as it's web server
 // for more info, see: http://expressjs.com
@@ -26,6 +30,7 @@ app.listen(appEnv.port, appEnv.bind, function() {
 
 	// print a message when the server starts listening
   console.log("server starting on " + appEnv.url);
+<<<<<<< HEAD
 
   var http = require("http");
   var options = 'https://<username>:<password>@cdeservice.mybluemix.net:443/api/v1/messages/search?q=' + <input>;
@@ -49,3 +54,6 @@ function compareTime(tweetTime, eventTime)
 }
 
 });
+=======
+});
+>>>>>>> aa4fe2813cc914eef4df8e2874192216f432bf0f
