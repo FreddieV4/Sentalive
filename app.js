@@ -27,7 +27,6 @@ app.listen(appEnv.port, appEnv.bind, function() {
 
 	// print a message when the server starts listening
   console.log("server starting on " + appEnv.url);
-<<<<<<< HEAD
 
   var http = require("http");
   var options = 'https://<username>:<password>@cdeservice.mybluemix.net:443/api/v1/messages/search?q=' + <input>;
