@@ -27,4 +27,26 @@ app.listen(appEnv.port, appEnv.bind, function() {
 
 	// print a message when the server starts listening
   console.log("server starting on " + appEnv.url);
+
+  var http = require("http");
+  var options = 'https://<username>:<password>@cdeservice.mybluemix.net:443/api/v1/messages/search?q=' + <input>;
+  //{
+    //host:'https://<username>:<password>@cdeservice.mybluemix.net:443/api/v1/messages/search?q=',
+    //path: <input>,
+  //};
+
+  //JSON object filled with an array of "tweets", each with their own data
+  var request = http.get(options, function(res){
+    for()
+  });
+
+///////////////
+// Functions //
+///////////////
+//Returns whether or not the tweet time is before or after the event
+function compareTime(tweetTime, eventTime)
+{
+  
+}
+
 });
