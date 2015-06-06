@@ -1,7 +1,7 @@
 {
-	"name": "NodejsStarterApp",
+	"name": "Sentalive",
 	"version": "0.0.1",
-	"description": "A sample nodejs app for Bluemix",
+	"description": "A nodejs app using IBM Bluemix",
 	"scripts": {
 		"start": "node app.js"
 	},
