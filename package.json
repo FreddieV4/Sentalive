@@ -12,7 +12,8 @@
     "express": "4.12.x",
     "express-ejs-layouts": "^1.1.0",
     "morgan": "^1.5.3",
-    "request": "^2.57.0"
+    "request": "^2.57.0",
+    "watson-developer-cloud": "^0.9.11"
   },
   "repository": {}
 }

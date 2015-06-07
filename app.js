@@ -20,7 +20,9 @@ app.use('/public', express.static(__dirname + '/public'));
 var appEnv = cfenv.getAppEnv();
 
 app.get('/', function(req, res){
-  res.render('index');
+  res.render('index', { jsonData : jsonCHILD });
+  console.log("JUST RENDERED");
+  console.log(jsonData);
  /* updated this line */
 });
 
@@ -129,27 +131,40 @@ console.log("\nServer: " + appEnv.url + '\n');
           }
         }
       }
-      console.log(tweetData.before.text);
+      // console.log(tweetData.before.text);
 
-var watsonOptions = 'https://821f292fdc3ca76b1a542b7edfd52ea9:AhzRt1NRAW@cdeservice.mybluemix.net:443/api/v2/profile';
- request.post(watsonOptions, {body : tweetData.before.text}, function(error, res, body) {
-    if (!error && response.statusCode == 200) {
-      console.log(body);
-    } else {
-      console.log('ERROR! ' + error);
-    }
-  //console.log("RESSSS: " + res);
-  //var tree = res.Profile.tree;
-  //for(var e in tree) {
-   // console.log(e.name);
-   // console.log(e.percentage);
-  //}
+var watson = require('watson-developer-cloud');
+ 
+var personality_insights = watson.personality_insights({
+  username: 'c43a289d-f38b-44e1-aefa-4c8258a01f95',
+  password: 'x7y8KpZhhLVi',
+  version: 'v2'
 });
-//var watsonOptions = 'https://821f292fdc3ca76b1a542b7edfd52ea9:AhzRt1NRAW@cdeservice.mybluemix.net:443/api/v2/profile?body=' + tweetData.during.text;
-//var watsonOptions = 'https://821f292fdc3ca76b1a542b7edfd52ea9:AhzRt1NRAW@cdeservice.mybluemix.net:443/api/v2/profile?body=' + tweetData.after.text;
 
-      });
+var jsonCHILD;
+personality_insights.profile({
+ text: tweetData.before.text },
+  function (err, response) {
+    if (err) {
+      console.log('error:', err);
+    }
+    else {
+      //console.log(JSON.stringify(response, null, 2));
+      var root = response.tree.children; //big 5, needs, values
+      console.log("len: " + root);
+      for (var i = 0; i < root.length; i++) {
+        var child = response.tree.children[i];
+        for (var j = 0; j < child.children.length; j++) {
+          var child_child = child.children[j];
+          console.log('i: ' + i + ' j: ' + j);
+          console.log(child_child);
+          jsonCHILD += child_child;
+        }
+      }
+    }
     });
+  });
+});
 
 options = 'https://821f292fdc3ca76b1a542b7edfd52ea9:AhzRt1NRAW@cdeservice.mybluemix.net:443/api/v1/messages/search?q=posted%3A' 
                             + newEventDateBegin + '%2C' + newEndEventDate + '%20AND%20' + input + '&size=500';
@@ -305,8 +320,7 @@ options = 'https://821f292fdc3ca76b1a542b7edfd52ea9:AhzRt1NRAW@cdeservice.myblue
         return false;
   }
 
- function timeConverterForURL(dateObj)
-{
+ function timeConverterForURL(dateObj) {
   var stringz;
   var year = dateObj.getFullYear().toString();
   var month = dateObj.getMonth();
@@ -338,3 +352,4 @@ day++;
     stringz = year+'-'+month+'-'+day+'T'+hours+'%3A'+mins+'%3A'+secs+'Z';
     return stringz;
 }
+
