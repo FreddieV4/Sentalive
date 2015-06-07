@@ -23,9 +23,11 @@ app.listen(appEnv.port, appEnv.bind, function() {
 	// print a message when the server starts listening
   console.log("server starting on " + appEnv.url);
 
+});
   ////////////
   // Variables
   ////////////
+
   var tweetData = [{
     name:"before",
     text: "",
@@ -52,30 +54,32 @@ app.listen(appEnv.port, appEnv.bind, function() {
     ambivalent:0,
     }];
 
-  var http = require("http");
+  var http = require("https");
   var input = 'ah8';
-  var options = 'http://821f292fdc3ca76b1a542b7edfd52ea9:AhzRt1NRAW@cdeservice.mybluemix.net:443/api/v1/messages/search?q=' + input;
+  var options = 'https://821f292fdc3ca76b1a542b7edfd52ea9:AhzRt1NRAW@cdeservice.mybluemix.net:443/api/v1/messages/search?q=' + input;
   var eventDate = new Date("2015-06-06T09:00:00.000Z");
 
-  //{
-    //host:'https://<username>:<password>@cdeservice.mybluemix.net:443/api/v1/messages/search?q=',
-    //path: <input>,
-  //};
+//   //{
+//     //host:'https://<username>:<password>@cdeservice.mybluemix.net:443/api/v1/messages/search?q=',
+//     //path: <input>,
+//   //};
 
-  //JSON object filled with an array of "tweets", each with their own data
-  var request = http.get(options, function(res){
+//   JSON object filled with an array of "tweets", each with their own data
+  var request = http.get(options, function(res) {
     //for(var key in res)
     //{
-console.log(res);
+    res.on('data', function(chunk) {
+    	console.log(chunk.toString());
+    })
     //}
   });
 
 ///////////////
 // Functions //
 ///////////////
-//Returns whether or not the tweet time is before or after the event
+// Returns whether or not the tweet time is before or after the event
 function compareTime(tweetTime) {
   // Note that time is a string
   var tweetDate = new Date(tweetTime);
-  //if()
+  // if()
 }
