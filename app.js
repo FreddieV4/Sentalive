@@ -20,8 +20,8 @@ var appEnv = cfenv.getAppEnv();
 // start server on the specified port and binding host
 app.listen(appEnv.port, appEnv.bind, function() {
 
-	// print a message when the server starts listening
-  console.log("server starting on " + appEnv.url);
+// print a message when the server starts listening
+console.log("server starting on " + appEnv.url);
 
 });
   ////////////
@@ -54,6 +54,7 @@ app.listen(appEnv.port, appEnv.bind, function() {
     ambivalent:0,
     }];
 
+
   var http = require("https");
   var input = 'ah8';
   var options = 'https://821f292fdc3ca76b1a542b7edfd52ea9:AhzRt1NRAW@cdeservice.mybluemix.net:443/api/v1/messages/search?q=' + input;
@@ -64,6 +65,27 @@ app.listen(appEnv.port, appEnv.bind, function() {
 //     //path: <input>,
 //   //};
 
+/*
+get tweetTime EventTime
+
+
+if tweetTime < EventTime return -1
+else if tweetTime == EventTime return 0
+else tweetTime > EventTime  return 1
+*/
+
+
+function sortTweets(tweetTime, eventStart, eventEnd){
+  if (tweetTime.getTime() < eventStart.getTime()){
+    return -1;
+  } else if (tweetTime.getTime() < eventEnd.getTime()){
+    return 0;
+  } else {
+    return 1;
+  }
+}
+
+//1970
 //   JSON object filled with an array of "tweets", each with their own data
   var request = http.get(options, function(res) {
     //for(var key in res)
