@@ -34,6 +34,7 @@ app.listen(appEnv.port, appEnv.bind, function() {
     neutral:0,
     ambivalent:0,
     },
+
     {
     name:"during",
     text: "",
@@ -50,9 +51,10 @@ app.listen(appEnv.port, appEnv.bind, function() {
     neutral:0,
     ambivalent:0,
     }];
+
   var http = require("http");
   var input = 'ah8';
-  var options = 'https://821f292fdc3ca76b1a542b7edfd52ea9:AhzRt1NRAW@cdeservice.mybluemix.net:443/api/v1/messages/search?q=' + input;
+  var options = 'http://821f292fdc3ca76b1a542b7edfd52ea9:AhzRt1NRAW@cdeservice.mybluemix.net:443/api/v1/messages/search?q=' + input;
   var eventDate = new Date("2015-06-06T09:00:00.000Z");
 
   //{
@@ -72,12 +74,8 @@ console.log(res);
 // Functions //
 ///////////////
 //Returns whether or not the tweet time is before or after the event
-function compareTime(tweetTime)
-{
+function compareTime(tweetTime) {
   // Note that time is a string
   var tweetDate = new Date(tweetTime);
   //if()
 }
-
-
-});
