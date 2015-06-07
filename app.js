@@ -66,10 +66,10 @@ console.log("\nServer: " + appEnv.url + '\n');
 
       var res;
       response.on('end', function(chunk) {
-        res = JSON.parse(jsonData);  
-      
+        res = JSON.parse(jsonData);
+
       console.log("THIS IS RES: " + res.tweets[20].message.body);
-      
+
 
       // Temp vars
     var sentiment;
@@ -136,17 +136,25 @@ console.log("\nServer: " + appEnv.url + '\n');
     })
       });
 
-///////////////
-// Functions //
-///////////////
-//Returns whether or not the tweet time is before or after the event
-function compareTime(tweetTime, eventTime) {
-  // Note that time is a string
-  var tweetDate = new Date(tweetTime);
-  //if()
-}
-// Returns true if the tweet is within 30 days (subject to change) of the event
-function checkWithinMaxRange(tweetTime, eventTime) { 
-  // if(tweetTime.Days)
-  //     ;
-}
+  ///////////////
+  // Functions //
+  ///////////////
+  //Returns whether or not the tweet time is before or after the event
+  function sortTweets(tweetTime, eventStart, eventEnd){
+    if (tweetTime.getTime() < eventStart.getTime()){
+      return -1;
+    } else if (tweetTime.getTime() < eventEnd.getTime()){
+      return 0;
+    } else {
+      return 1;
+    }
+  }
+  // Returns true if the tweet is within 30 days (subject to change) of the event
+  function isWithinRange(tweetTime, eventStart, eventEnd) {
+    var numDays = 30;
+    var startTime = eventStart.getTime() - (1000*60*60*24*numDays);
+    if (tweetTime.getTime() > startTime) {
+      return true;
+    }
+    return false;
+  }
