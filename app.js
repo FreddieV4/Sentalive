@@ -30,6 +30,7 @@ app.listen(appEnv.port, appEnv.bind, function() {
 // print a message when the server starts listening
 console.log("\nServer: " + appEnv.url + '\n');
 });
+
   ///////////////
   // Variables //
   ///////////////
@@ -59,9 +60,10 @@ console.log("\nServer: " + appEnv.url + '\n');
       ambivalent:0,
     }};
   var http = require("https");
-  var input = 'ah8';
-  var options = 'https://821f292fdc3ca76b1a542b7edfd52ea9:AhzRt1NRAW@cdeservice.mybluemix.net:443/api/v1/messages/search?q=' + input;
+  var input = 'JustinBieber';
+  var options = 'https://821f292fdc3ca76b1a542b7edfd52ea9:AhzRt1NRAW@cdeservice.mybluemix.net:443/api/v1/messages/search?q=' + input + '&from=11' + '&size=500';
   var eventDate = new Date("2015-06-06T09:00:00.000Z");
+  var eventEndDate = new Date("2015-06-07T18:00:00.000Z");
   var countryFilter = 'United States';
   var stateFilter = '';
 
@@ -76,9 +78,14 @@ console.log("\nServer: " + appEnv.url + '\n');
       var res;
       response.on('end', function(chunk) {
         res = JSON.parse(jsonData);
+        console.log("THIS IS A TWEET: " + res.tweets[5].message.body);
 
-      console.log("THIS IS RES: " + res.tweets[20].message.body);
+var debug = true;
 
+function db(string) {
+  if (debug)
+    console.log("DB: " + string);
+}
 
       // Temp vars
     var sentiment;
@@ -87,27 +94,30 @@ console.log("\nServer: " + appEnv.url + '\n');
     //for(var tweet in res["tweets"])
     for(var i=0; i<res.tweets.length; i++) {
       // Check to make sure it's in English (IT MUST BE)
+        tweetDate = new Date(res.tweets[i].message.postedTime);
+        db(' TWEET #' + i + ' ' + tweetDate);
       if(res.tweets[i].message.actor.languages[0] == 'en')
       {
         // Check to make sure it's in the right country
-        if(countryFilter='' || (countryFilter!='' && isInCountry(res.tweets[i], countryFilter)))
+        if(countryFilter =='' || (countryFilter !='' && isInCountry(res.tweets[i], countryFilter)))
         {
+
           // Check to make sure it's in the right state
-          if(stateFilter='' || (stateFilter!='' && isInState(res.tweets[i], stateFilter)))
+          if(stateFilter == '' || (stateFilter !='' && isInState(res.tweets[i], stateFilter)))
           {
             // Store the date as a date type, instead of a string
-            tweetDate = new Date(res.tweets[i].message.postedTime);
             // Check to see if the tweet is within range
             if( isWithinRange(tweetDate, eventDate) ) {
               // Store the sentiment so I don't have to write it out every time
               sentiment = res.tweets[i].cde.content.sentiment.polarity;
               // Do a switch on the time comparison
-              switch ( compareTime(tweetDate, eventDate) ) {
+              switch ( sortTweets(tweetDate, eventDate, eventEndDate) ) {
                 // If tweet is before the event
                 case -1:
                     // Add text so Watson can use it
                     tweetData.before.text+=res.tweets[i].message.body + ' ';
                     // Compare sentiment and add vars accordingly
+                    db('CASE NEG 1');
                     if(sentiment == "POSITIVE")
                       tweetData.before.positive++;
                     else if(sentiment == "NEGATIVE")
@@ -120,7 +130,7 @@ console.log("\nServer: " + appEnv.url + '\n');
 
                 // If tweet is during the event
                 case 0:
-
+                    db('CASE ZERO');
                     tweetData.during.text+=res.tweets[i].message.body;
 
                     if(sentiment == "POSITIVE")
@@ -135,7 +145,7 @@ console.log("\nServer: " + appEnv.url + '\n');
 
                 // If tweet is after the event
                 case 1:
-
+                    db('CASE ONE');
                     tweetData.after.text+=res.tweets[i].message.body;
 
                     if(sentiment == "POSITIVE")
@@ -154,6 +164,7 @@ console.log("\nServer: " + appEnv.url + '\n');
       }
     }
 
+    console.log(tweetData);
     })
       });
 
@@ -171,7 +182,7 @@ console.log("\nServer: " + appEnv.url + '\n');
     }
   }
   // Returns true if the tweet is within 30 days (subject to change) of the event
-  function isWithinRange(tweetTime, eventStart, eventEnd) {
+  function isWithinRange(tweetTime, eventStart) {
     var numDays = 30;
     var startTime = eventStart.getTime() - (1000*60*60*24*numDays);
     if (tweetTime.getTime() > startTime) {
@@ -190,7 +201,7 @@ console.log("\nServer: " + appEnv.url + '\n');
   // Returns true if the tweet is in the specified state
   function isInState(tweetData, stateName)
   {
-    if(tweetData.cde.author.location.country == stateName)
+    if(tweetData.cde.author.location.state == stateName)
       return true;
       else
         return false;
