@@ -20,12 +20,12 @@ var appEnv = cfenv.getAppEnv();
 // start server on the specified port and binding host
 app.listen(appEnv.port, appEnv.bind, function() {
 
-	// print a message when the server starts listening
-  console.log("server starting on " + appEnv.url);
+// print a message when the server starts listening
+console.log("server starting on " + appEnv.url);
 
-  ////////////
-  // Variables
-  ////////////
+  ///////////////
+  // Variables //
+  ///////////////
   var tweetData = {
     before:
     {
@@ -58,24 +58,31 @@ app.listen(appEnv.port, appEnv.bind, function() {
 
   //JSON object filled with an array of "tweets", each with their own data
   var request = http.get(options, function(res){
+    // Teddy is our hero
+    res.on('data', function(chunk){
+      console.log(chunk.toString());
+    })
+    // Temp vars
     var sentiment;
     var tweetDate;
-    for(var tweet in res["tweets"])
+    // Foreach loop to iterate through the JSON tweets
+    //for(var tweet in res["tweets"])
+    for(var i=0; i<res.tweets.length; i++)
     {
       // Store the date as a date type, instead of a string
-      tweetDate = new Date(tweet.message.postedTime);
+      tweetDate = new Date(res.tweets[i].message.postedTime);
       // Check to see if the tweet is within range
       if( checkWithinMaxRange(tweetDate, eventDate) )
       {
         // Store the sentiment so I don't have to write it out every time
-        sentiment = tweet.content_sentiment.polarity;
+        sentiment = res.tweets[i].content_sentiment.polarity;
         // Do a switch on the time comparison
         switch ( compareTime(tweetDate, eventDate) )
         {
           // If tweet is before the event
           case -1:
               // Add text so Watson can use it
-              tweetData.before.text+=tweet.message.body;
+              tweetData.before.text+=res.tweets[i].message.body;
               // Compare sentiment and add vars accordingly
               if(sentiment == "positive")
                 tweetData.before.positive++;
@@ -88,7 +95,7 @@ app.listen(appEnv.port, appEnv.bind, function() {
               break;
           // If tweet is during the event
           case 0:
-              tweetData.during.text+=tweet.message.body;
+              tweetData.during.text+=res.tweets[i].message.body;
               if(sentiment == "positive")
                 tweetData.during.positive++;
               else if(sentiment == "negative")
@@ -100,7 +107,7 @@ app.listen(appEnv.port, appEnv.bind, function() {
               break;
           // If tweet is after the event
           case 1:
-              tweetData.after.text+=tweet.message.body;
+              tweetData.after.text+=res.tweets[i].message.body;
               if(sentiment == "positive")
                 tweetData.after.positive++;
               else if(sentiment == "negative")
