@@ -23,63 +23,110 @@ app.listen(appEnv.port, appEnv.bind, function() {
 	// print a message when the server starts listening
   console.log("server starting on " + appEnv.url);
 
-});
   ////////////
   // Variables
   ////////////
-
-  var tweetData = [{
-    name:"before",
-    text: "",
-    positive:0,
-    negative:0,
-    neutral:0,
-    ambivalent:0,
-    },
-
+  var tweetData = {
+    before:
     {
-    name:"during",
-    text: "",
-    positive:0,
-    negative:0,
-    neutral:0,
-    ambivalent:0,
+      text:"",
+      positive:0,
+      negative:0,
+      neutral:0,
+      ambivalent:0,
     },
+    during:
     {
-    name:"after",
-    text: "",
-    positive:0,
-    negative:0,
-    neutral:0,
-    ambivalent:0,
-    }];
-
+      text:"",
+      positive:0,
+      negative:0,
+      neutral:0,
+      ambivalent:0,
+    },
+    after:
+    {
+      text:"",
+      positive:0,
+      negative:0,
+      neutral:0,
+      ambivalent:0,
+    };
   var http = require("https");
   var input = 'ah8';
   var options = 'https://821f292fdc3ca76b1a542b7edfd52ea9:AhzRt1NRAW@cdeservice.mybluemix.net:443/api/v1/messages/search?q=' + input;
   var eventDate = new Date("2015-06-06T09:00:00.000Z");
 
-//   //{
-//     //host:'https://<username>:<password>@cdeservice.mybluemix.net:443/api/v1/messages/search?q=',
-//     //path: <input>,
-//   //};
-
-//   JSON object filled with an array of "tweets", each with their own data
-  var request = http.get(options, function(res) {
-    //for(var key in res)
-    //{
-    res.on('data', function(chunk) {
-    	console.log(chunk.toString());
-    })
-    //}
+  //JSON object filled with an array of "tweets", each with their own data
+  var request = http.get(options, function(res){
+    var sentiment;
+    var tweetDate;
+    for(var tweet in res["tweets"])
+    {
+      // Store the date as a date type, instead of a string
+      tweetDate = new Date(tweet.message.postedTime);
+      // Check to see if the tweet is within range
+      if( checkWithinMaxRange(tweetDate, eventDate) )
+      {
+        // Store the sentiment so I don't have to write it out every time
+        sentiment = tweet.content_sentiment.polarity;
+        // Do a switch on the time comparison
+        switch ( compareTime(tweetDate, eventDate) )
+        {
+          // If tweet is before the event
+          case -1:
+              // Add text so Watson can use it
+              tweetData.before.text+=tweet.message.body;
+              // Compare sentiment and add vars accordingly
+              if(sentiment == "positive")
+                tweetData.before.positive++;
+              else if(sentiment == "negative")
+                tweetData.before.negative++;
+              else if(sentiment == "neutral")
+                tweetData.before.neutral++;
+              else
+                tweetData.before.ambivalent++;
+              break;
+          // If tweet is during the event
+          case 0:
+              tweetData.during.text+=tweet.message.body;
+              if(sentiment == "positive")
+                tweetData.during.positive++;
+              else if(sentiment == "negative")
+                tweetData.during.negative++;
+              else if(sentiment == "neutral")
+                tweetData.during.neutral++;
+              else
+                tweetData.during.ambivalent++;
+              break;
+          // If tweet is after the event
+          case 1:
+              tweetData.after.text+=tweet.message.body;
+              if(sentiment == "positive")
+                tweetData.after.positive++;
+              else if(sentiment == "negative")
+                tweetData.after.negative++;
+              else if(sentiment == "neutral")
+                tweetData.after.neutral++;
+              else
+                tweetData.after.ambivalent++;
+              break;
+        }
+      }
+    }
   });
 
 ///////////////
 // Functions //
 ///////////////
-// Returns whether or not the tweet time is before or after the event
-function compareTime(tweetTime) {
+//Returns whether or not the tweet time is before or after the event
+function compareTime(tweetTime, eventTime)
+{
   // Note that time is a string
   var tweetDate = new Date(tweetTime);
-  // if()
+  //if()
+}
+// Returns true if the tweet is within 30 days (subject to change) of the event
+function checkWithinMaxRange(tweetTime, eventTime)
+{
+  if(tweetTime.Days)
 }
