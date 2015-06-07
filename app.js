@@ -58,15 +58,18 @@ app.listen(appEnv.port, appEnv.bind, function() {
 
   //JSON object filled with an array of "tweets", each with their own data
   var request = http.get(options, function(res){
+
+    res.on('data', function(chunk){
+      console.log(chunk.toString());
+    })
+
     var sentiment;
     var tweetDate;
-    for(var tweet in res["tweets"])
-    {
+    for(var tweet in res["tweets"]) {
       // Store the date as a date type, instead of a string
       tweetDate = new Date(tweet.message.postedTime);
       // Check to see if the tweet is within range
-      if( checkWithinMaxRange(tweetDate, eventDate) )
-      {
+      if( checkWithinMaxRange(tweetDate, eventDate) ) {
         // Store the sentiment so I don't have to write it out every time
         sentiment = tweet.content_sentiment.polarity;
         // Do a switch on the time comparison
