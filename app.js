@@ -30,7 +30,7 @@ app.listen(appEnv.port, appEnv.bind, function() {
 console.log("\nServer: " + appEnv.url + '\n');
 });
 
-  ///////////////
+ ///////////////
   // Variables //
   ///////////////
   var tweetData = {
@@ -58,14 +58,24 @@ console.log("\nServer: " + appEnv.url + '\n');
       neutral:0,
       ambivalent:0,
     }};
+    /*
   var http = require("https");
-  var input = 'JustinBieber';
-  var options = 'https://821f292fdc3ca76b1a542b7edfd52ea9:AhzRt1NRAW@cdeservice.mybluemix.net:443/api/v1/messages/search?q=' + input + '&from=200' + '&size=500';
+  var input = 'thing';
   var eventDate = new Date("2015-06-06T09:00:00.000Z");
   var eventEndDate = new Date("2015-06-07T18:00:00.000Z");
-  var countryFilter = 'United States';
-  var stateFilter = '';
+  //var startTimeAnalysis = calculateStartTime(eventDate).toISOString();
+  //var endTimeAnalysis = calculateEndingTime(eventEndDate).toISOString();
+  //var newStartTimeAnalysis = startTimeAnalysis.replace(/:/g, "%3A");
+  //var newEndTimeAnalyzsis = endTimeAnalysis.replace(/:/g, "%3A");
+  var newStartTimeAnalysis = timeConverterForURL(calculateStartTime(eventDate));
+  var newEndTimeAnalyzsis = timeConverterForURL(calculateEndingTime(eventEndDate));
 
+  var options = 'https://821f292fdc3ca76b1a542b7edfd52ea9:AhzRt1NRAW@cdeservice.mybluemix.net:443/api/v1/messages/search?q=posted%3A' 
+                            + newStartTimeAnalysis + '%2C' + newEndTimeAnalyzsis + '%20AND%20' + input + '&size=500';
+  console.log("\nOPTIONS BITCH: " + options);
+  var countryFilter = '';
+  var stateFilter = '';
+ 
   //JSON object filled with an array of "tweets", each with their own data
   var request = http.get(options, function(response) {
     // Teddy is our hero
@@ -73,19 +83,11 @@ console.log("\nServer: " + appEnv.url + '\n');
       response.on('data', function(chunk) {
       jsonData += chunk.toString();
     });
-
+ 
       var res;
       response.on('end', function(chunk) {
         res = JSON.parse(jsonData);
-        console.log("THIS IS A TWEET: " + res.tweets[5].message.body);
-
-var debug = true;
-
-function db(string) {
-  if (debug)
-    console.log("DB: " + string);
-}
-
+        //console.log('STRING: ' + chunk.toString());
       // Temp vars
     var sentiment;
     var tweetDate;
@@ -93,20 +95,17 @@ function db(string) {
     //for(var tweet in res["tweets"])
     for(var i=0; i<res.tweets.length; i++) {
       // Check to make sure it's in English (IT MUST BE)
-        tweetDate = new Date(res.tweets[i].message.postedTime);
-        db(' TWEET #' + i + ' ' + tweetDate);
+      console.log('TWEET #: ' + i + ' ' + res.tweets[i].message.postedTime);
       if(res.tweets[i].message.actor.languages[0] == 'en')
       {
         // Check to make sure it's in the right country
-        if(countryFilter =='' || (countryFilter !='' && isInCountry(res.tweets[i], countryFilter)))
+        if(countryFilter=='' || (countryFilter!='' && isInCountry(res.tweets[i], countryFilter)))
         {
-
           // Check to make sure it's in the right state
-          if(stateFilter == '' || (stateFilter !='' && isInState(res.tweets[i], stateFilter)))
+          if(stateFilter=='' || (stateFilter!='' && isInState(res.tweets[i], stateFilter)))
           {
-            // Store the date as a date type, instead of a string
-            // Check to see if the tweet is within range
-            if( isWithinRange(tweetDate, eventDate) ) {
+              // Store the date as a date type, instead of a string
+              tweetDate = new Date(res.tweets[i].message.postedTime);
               // Store the sentiment so I don't have to write it out every time
               sentiment = res.tweets[i].cde.content.sentiment.polarity;
               // Do a switch on the time comparison
@@ -116,7 +115,6 @@ function db(string) {
                     // Add text so Watson can use it
                     tweetData.before.text+=res.tweets[i].message.body + ' ';
                     // Compare sentiment and add vars accordingly
-                    db('CASE NEG 1');
                     if(sentiment == "POSITIVE")
                       tweetData.before.positive++;
                     else if(sentiment == "NEGATIVE")
@@ -126,12 +124,12 @@ function db(string) {
                     else
                       tweetData.before.ambivalent++;
                     break;
-
+ 
                 // If tweet is during the event
                 case 0:
-                    db('CASE ZERO');
+ 
                     tweetData.during.text+=res.tweets[i].message.body;
-
+ 
                     if(sentiment == "POSITIVE")
                       tweetData.during.positive++;
                     else if(sentiment == "NEGATIVE")
@@ -141,12 +139,12 @@ function db(string) {
                     else
                       tweetData.during.ambivalent++;
                     break;
-
+ 
                 // If tweet is after the event
                 case 1:
-                    db('CASE ONE');
+ 
                     tweetData.after.text+=res.tweets[i].message.body;
-
+ 
                     if(sentiment == "POSITIVE")
                       tweetData.after.positive++;
                     else if(sentiment == "NEGATIVE")
@@ -156,17 +154,196 @@ function db(string) {
                     else
                       tweetData.after.ambivalent++;
                     break;
-              }
             }
           }
         }
       }
     }
+ //console.log(tweetData);
 
-    console.log(tweetData);
     })
       });
+*/
 
+  var http = require("https");
+  var input = 'grok';
+  var eventDate = new Date("2015-06-06T09:00:00.000Z");
+  var eventEndDate = new Date("2015-06-07T18:00:00.000Z");
+  //var startTimeAnalysis = calculateStartTime(eventDate).toISOString();
+  //var endTimeAnalysis = calculateEndingTime(eventEndDate).toISOString();
+  //var newStartTimeAnalysis = startTimeAnalysis.replace(/:/g, "%3A");
+  //var newEndTimeAnalyzsis = endTimeAnalysis.replace(/:/g, "%3A");
+  var newStartTimeAnalysis = timeConverterForURL(calculateStartTime(eventDate));
+  var newEndTimeAnalyzsis = timeConverterForURL(calculateEndingTime(eventEndDate));
+  var newEventDateBegin = timeConverterForURL(eventDate);
+  var newEndEventDate = timeConverterForURL(eventEndDate);
+  var countryFilter = '';
+  var stateFilter = '';
+
+
+
+  var options = 'https://821f292fdc3ca76b1a542b7edfd52ea9:AhzRt1NRAW@cdeservice.mybluemix.net:443/api/v1/messages/search?q=posted%3A' 
+                            + newStartTimeAnalysis + '%2C' + newEventDateBegin + '%20AND%20' + input + '&size=500';
+
+ var request1 = http.get(options, function(response) {
+    // Teddy is our hero
+      var jsonData = '';
+      response.on('data', function(chunk) {
+      jsonData += chunk.toString();
+    });
+ 
+      var res;
+      response.on('end', function(chunk) {
+      res = JSON.parse(jsonData);
+
+      var sentiment;
+      var tweetDate;
+
+      // Foreach loop to iterate through the JSON tweets
+      //for(var tweet in res["tweets"])
+      for(var i=0; i<res.tweets.length; i++) {
+        // Check to make sure it's in English (IT MUST BE)
+        //console.log('TWEET #: ' + i + ' ' + res.tweets[i].message.postedTime);
+        if(res.tweets[i].message.actor.languages[0] == 'en')
+        {
+          // Check to make sure it's in the right country
+          if(countryFilter=='' || (countryFilter!='' && isInCountry(res.tweets[i], countryFilter)))
+          {
+            // Check to make sure it's in the right state
+            if(stateFilter=='' || (stateFilter!='' && isInState(res.tweets[i], stateFilter)))
+            {
+                // Store the date as a date type, instead of a string
+                tweetDate = new Date(res.tweets[i].message.postedTime);
+                // Store the sentiment so I don't have to write it out every time
+                sentiment = 'nothing';
+                if (res.tweets[i].cde.content != null) {
+                  sentiment = res.tweets[i].cde.content.sentiment.polarity;
+                }
+                tweetData.before.text+=res.tweets[i].message.body + ' ';
+                // Compare sentiment and add vars accordingly
+                if(sentiment == "POSITIVE")
+                  tweetData.before.positive++;
+                else if(sentiment == "NEGATIVE")
+                  tweetData.before.negative++;
+                else if(sentiment == "NEUTRAL")
+                  tweetData.before.neutral++;
+                else if(sentiment == "AMBIVALENT")
+                  tweetData.before.ambivalent++;
+            }
+          }
+        }
+      }          
+      });
+    });
+
+options = 'https://821f292fdc3ca76b1a542b7edfd52ea9:AhzRt1NRAW@cdeservice.mybluemix.net:443/api/v1/messages/search?q=posted%3A' 
+                            + newEventDateBegin + '%2C' + newEndEventDate + '%20AND%20' + input + '&size=500';
+
+ var request2 = http.get(options, function(response) {
+    // Teddy is our hero
+      var jsonData = '';
+      response.on('data', function(chunk) {
+      jsonData += chunk.toString();
+    });
+ 
+      var res;
+      response.on('end', function(chunk) {
+      res = JSON.parse(jsonData);
+
+      var sentiment;
+      var tweetDate;
+
+      // Foreach loop to iterate through the JSON tweets
+      //for(var tweet in res["tweets"])
+      for(var i=0; i<res.tweets.length; i++) {
+        // Check to make sure it's in English (IT MUST BE)
+        //console.log('TWEET #: ' + i + ' ' + res.tweets[i].message.postedTime);
+        if(res.tweets[i].message.actor.languages[0] == 'en')
+        {
+          // Check to make sure it's in the right country
+          if(countryFilter=='' || (countryFilter!='' && isInCountry(res.tweets[i], countryFilter)))
+          {
+            // Check to make sure it's in the right state
+            if(stateFilter=='' || (stateFilter!='' && isInState(res.tweets[i], stateFilter)))
+            {
+                // Store the date as a date type, instead of a string
+                tweetDate = new Date(res.tweets[i].message.postedTime);
+                // Store the sentiment so I don't have to write it out every time
+                sentiment = 'nothing';
+                if (res.tweets[i].cde.content != null) {
+                  sentiment = res.tweets[i].cde.content.sentiment.polarity;
+                }
+                tweetData.during.text+=res.tweets[i].message.body + ' ';
+                // Compare sentiment and add vars accordingly
+                if(sentiment == "POSITIVE")
+                  tweetData.during.positive++;
+                else if(sentiment == "NEGATIVE")
+                  tweetData.during.negative++;
+                else if(sentiment == "NEUTRAL")
+                  tweetData.during.neutral++;
+                else if(sentiment == "AMBIVALENT")
+                  tweetData.during.ambivalent++;
+            }
+          }
+        }
+      }          
+      });
+    });
+
+options = 'https://821f292fdc3ca76b1a542b7edfd52ea9:AhzRt1NRAW@cdeservice.mybluemix.net:443/api/v1/messages/search?q=posted%3A' 
+                            + newEndEventDate + '%2C' + newEndTimeAnalyzsis + '%20AND%20' + input + '&size=500';
+
+ var request3 = http.get(options, function(response) {
+    // Teddy is our hero
+      var jsonData = '';
+      response.on('data', function(chunk) {
+      jsonData += chunk.toString();
+    });
+ 
+      var res;
+      response.on('end', function(chunk) {
+      res = JSON.parse(jsonData);
+
+      var sentiment;
+      var tweetDate;
+
+      // Foreach loop to iterate through the JSON tweets
+      //for(var tweet in res["tweets"])
+      for(var i=0; i<res.tweets.length; i++) {
+        // Check to make sure it's in English (IT MUST BE)
+        //console.log('TWEET #: ' + i + ' ' + res.tweets[i].message.postedTime);
+        if(res.tweets[i].message.actor.languages[0] == 'en')
+        {
+          // Check to make sure it's in the right country
+          if(countryFilter=='' || (countryFilter!='' && isInCountry(res.tweets[i], countryFilter)))
+          {
+            // Check to make sure it's in the right state
+            if(stateFilter=='' || (stateFilter!='' && isInState(res.tweets[i], stateFilter)))
+            {
+                // Store the date as a date type, instead of a string
+                tweetDate = new Date(res.tweets[i].message.postedTime);
+                // Store the sentiment so I don't have to write it out every time
+                sentiment = 'nothing';
+                if (res.tweets[i].cde.content != null) {
+                  sentiment = res.tweets[i].cde.content.sentiment.polarity;
+                }
+                tweetData.after.text+=res.tweets[i].message.body + ' ';
+                // Compare sentiment and add vars accordingly
+                if(sentiment == "POSITIVE")
+                  tweetData.after.positive++;
+                else if(sentiment == "NEGATIVE")
+                  tweetData.after.negative++;
+                else if(sentiment == "NEUTRAL")
+                  tweetData.after.neutral++;
+                else if(sentiment == "AMBIVALENT")
+                  tweetData.after.ambivalent++;
+            }
+          }
+        }
+      }          
+      });
+    });
+ 
   ///////////////
   // Functions //
   ///////////////
@@ -180,14 +357,17 @@ function db(string) {
       return 1;
     }
   }
-  // Returns true if the tweet is within 30 days (subject to change) of the event
-  function isWithinRange(tweetTime, eventStart) {
+  // Returns the starting time
+  function calculateStartTime(eventStart) {
     var numDays = 30;
-    var startTime = eventStart.getTime() - (1000*60*60*24*numDays);
-    if (tweetTime.getTime() > startTime) {
-      return true;
-    }
-    return false;
+    var startTime = new Date(eventStart.getTime() - (1000*60*60*24*numDays));
+    return startTime;
+  }
+  // Returns the ending time
+  function calculateEndingTime(eventEnd) {
+    var numDays = 30;
+    var endTime = new Date(eventEnd.getTime() + (1000*60*60*24*numDays));
+    return endTime;
   }
   // Returns true if the tweet is in the specified country
   function isInCountry(tweetData, countryName)
@@ -205,3 +385,37 @@ function db(string) {
       else
         return false;
   }
+
+ function timeConverterForURL(dateObj)
+{
+  var stringz;
+  var year = dateObj.getFullYear().toString();
+  var month = dateObj.getMonth();
+  var day = dateObj.getDay();
+  var hours = dateObj.getHours();
+  var mins = dateObj.getMinutes();
+  var secs = dateObj.getSeconds();
+month++;
+  if(month<10)
+    month = "0"+month.toString();
+    else month=month.toString();
+day++;
+  if(day<10)
+    day = "0"+day.toString();
+    else day=day.toString();
+
+  if(hours<10)
+    hours = "0"+hours.toString();
+    else hours=hours.toString();
+
+  if(mins<10)
+    mins = "0"+mins.toString();
+    else mins=mins.toString();
+
+  if(secs<10)
+    secs = "0"+secs.toString();
+    else secs=secs.toString();
+
+    stringz = year+'-'+month+'-'+day+'T'+hours+'%3A'+mins+'%3A'+secs+'Z';
+    return stringz;
+}
