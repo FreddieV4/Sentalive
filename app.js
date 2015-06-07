@@ -19,12 +19,14 @@ app.use('/public', express.static(__dirname + '/public'));
 // get the app environment from Cloud Foundry
 var appEnv = cfenv.getAppEnv();
 
+function GETWrapper(json) {
 app.get('/', function(req, res){
-  res.render('index', { jsonData : jsonCHILD });
-  console.log("JUST RENDERED");
+  res.render('index', { jsonData : json });
+  console.log("JUST RENDERED")
   console.log(jsonData);
  /* updated this line */
 });
+}
 
 
 // start server on the specified port and binding host
@@ -141,7 +143,6 @@ var personality_insights = watson.personality_insights({
   version: 'v2'
 });
 
-var jsonCHILD;
 personality_insights.profile({
  text: tweetData.before.text },
   function (err, response) {
@@ -158,7 +159,7 @@ personality_insights.profile({
           var child_child = child.children[j];
           console.log('i: ' + i + ' j: ' + j);
           console.log(child_child);
-          jsonCHILD += child_child;
+          GETWrapper(child_child.toString());
         }
       }
     }
