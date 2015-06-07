@@ -1,13 +1,15 @@
 {
-	"name": "Sentalive",
-	"version": "0.0.1",
-	"description": "A nodejs app using IBM Bluemix",
-	"scripts": {
-		"start": "node app.js"
-	},
-	"dependencies": {
-		"express": "4.12.x",
-		"cfenv": "1.0.x"
-	},
-	"repository": {}
+  "name": "Sentalive",
+  "version": "0.0.1",
+  "description": "A nodejs app using IBM Bluemix",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "cfenv": "1.0.x",
+    "durable-json-lint": "0.0.1",
+    "ejs": "^2.3.1",
+    "express": "4.12.x"
+  },
+  "repository": {}
 }
