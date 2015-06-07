@@ -26,7 +26,6 @@ app.get('/', function(req, res){
 
 var search = require('/public/search');
 app.get('./search', search.search);
-
 // start server on the specified port and binding host
 app.listen(appEnv.port, appEnv.bind, function() {
 // print a message when the server starts listening

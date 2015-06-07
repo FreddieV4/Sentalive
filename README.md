@@ -2,6 +2,10 @@
 
 A Node.js application that uses IBM Bluemix for deployment, Twitter insights, sentiment analysis, and IBM Watson.
 
+## Motivation
+
+This Node.js app was built for the AngelHack Boston 2015 Hackathon.
+
 ## Requirements
 	- IBM Bluemix
 	- Node.js
