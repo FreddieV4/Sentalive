@@ -11,17 +11,28 @@ var cfenv = require('cfenv');
 // create a new express server
 var app = express();
 
+// set the view engine to ejs
+app.set('view engine', 'ejs');
+
 // serve the files out of ./public as our main files
-app.use(express.static(__dirname + '/public'));
+app.use(express.static(__dirname + 'public'));
 
 // get the app environment from Cloud Foundry
 var appEnv = cfenv.getAppEnv();
+
+app.get('/', function(req, res){
+  res.render('index');
+ /* updated this line */
+});
+
 
 // start server on the specified port and binding host
 app.listen(appEnv.port, appEnv.bind, function() {
 // print a message when the server starts listening
 console.log("\nServer: " + appEnv.url + '\n');
 });
+
+
   ///////////////
   // Variables //
   ///////////////
@@ -72,66 +83,66 @@ console.log("\nServer: " + appEnv.url + '\n');
 
 
       // Temp vars
-    var sentiment;
-    var tweetDate;
-    // Foreach loop to iterate through the JSON tweets
-    //for(var tweet in res["tweets"])
-    for(var i=0; i<res.tweets.length; i++) {
-      // Store the date as a date type, instead of a string
-      tweetDate = new Date(res.tweets[i].message.postedTime);
-      // Check to see if the tweet is within range
-      if( checkWithinMaxRange(tweetDate, eventDate) ) {
-        // Store the sentiment so I don't have to write it out every time
-        sentiment = res.tweets[i].content_sentiment.polarity;
-        // Do a switch on the time comparison
-        switch ( compareTime(tweetDate, eventDate) ) {
-          // If tweet is before the event
-          case -1:
-              // Add text so Watson can use it
-              tweetData.before.text+=res.tweets[i].message.body;
-              // Compare sentiment and add vars accordingly
-              if(sentiment == "positive")
-                tweetData.before.positive++;
-              else if(sentiment == "negative")
-                tweetData.before.negative++;
-              else if(sentiment == "neutral")
-                tweetData.before.neutral++;
-              else
-                tweetData.before.ambivalent++;
-              break;
+    // var sentiment;
+    // var tweetDate;
+    // // Foreach loop to iterate through the JSON tweets
+    // //for(var tweet in res["tweets"])
+    // for(var i=0; i<res.tweets.length; i++) {
+    //   // Store the date as a date type, instead of a string
+    //   tweetDate = new Date(res.tweets[i].message.postedTime);
+    //   // Check to see if the tweet is within range
+    //   if( isWithinRange(tweetDate, eventDate) ) {
+    //     // Store the sentiment so I don't have to write it out every time
+    //     sentiment = res.tweets[i].content_sentiment.polarity;
+    //     // Do a switch on the time comparison
+    //     switch ( compareTime(tweetDate, eventDate) ) {
+    //       // If tweet is before the event
+    //       case -1:
+    //           // Add text so Watson can use it
+    //           tweetData.before.text+=res.tweets[i].message.body;
+    //           // Compare sentiment and add vars accordingly
+    //           if(sentiment == "positive")
+    //             tweetData.before.positive++;
+    //           else if(sentiment == "negative")
+    //             tweetData.before.negative++;
+    //           else if(sentiment == "neutral")
+    //             tweetData.before.neutral++;
+    //           else
+    //             tweetData.before.ambivalent++;
+    //           break;
 
-          // If tweet is during the event
-          case 0:
+    //       // If tweet is during the event
+    //       case 0:
 
-              tweetData.during.text+=res.tweets[i].message.body;
+    //           tweetData.during.text+=res.tweets[i].message.body;
 
-              if(sentiment == "positive")
-                tweetData.during.positive++;
-              else if(sentiment == "negative")
-                tweetData.during.negative++;
-              else if(sentiment == "neutral")
-                tweetData.during.neutral++;
-              else
-                tweetData.during.ambivalent++;
-              break;
+    //           if(sentiment == "positive")
+    //             tweetData.during.positive++;
+    //           else if(sentiment == "negative")
+    //             tweetData.during.negative++;
+    //           else if(sentiment == "neutral")
+    //             tweetData.during.neutral++;
+    //           else
+    //             tweetData.during.ambivalent++;
+    //           break;
 
-          // If tweet is after the event
-          case 1:
+    //       // If tweet is after the event
+    //       case 1:
 
-              tweetData.after.text+=res.tweets[i].message.body;
+    //           tweetData.after.text+=res.tweets[i].message.body;
 
-              if(sentiment == "positive")
-                tweetData.after.positive++;
-              else if(sentiment == "negative")
-                tweetData.after.negative++;
-              else if(sentiment == "neutral")
-                tweetData.after.neutral++;
-              else
-                tweetData.after.ambivalent++;
-              break;
-        }
-      }
-    }
+    //           if(sentiment == "positive")
+    //             tweetData.after.positive++;
+    //           else if(sentiment == "negative")
+    //             tweetData.after.negative++;
+    //           else if(sentiment == "neutral")
+    //             tweetData.after.neutral++;
+    //           else
+    //             tweetData.after.ambivalent++;
+    //           break;
+    //     }
+    //   }
+    // }
 
     })
       });
