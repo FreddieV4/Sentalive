@@ -72,8 +72,7 @@ console.log("server starting on " + appEnv.url);
       // Store the date as a date type, instead of a string
       tweetDate = new Date(res.tweets[i].message.postedTime);
       // Check to see if the tweet is within range
-      if( checkWithinMaxRange(tweetDate, eventDate) )
-      {
+      if( checkWithinMaxRange(tweetDate, eventDate) ) {
         // Store the sentiment so I don't have to write it out every time
         sentiment = res.tweets[i].content_sentiment.polarity;
         // Do a switch on the time comparison
