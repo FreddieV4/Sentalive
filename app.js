@@ -15,8 +15,7 @@ var app = express();
 app.set('view engine', 'ejs');
 
 // serve the files out of ./public as our main files
-app.use(express.static(__dirname + 'public'));
-
+app.use('/public', express.static(__dirname + '/public'));
 // get the app environment from Cloud Foundry
 var appEnv = cfenv.getAppEnv();
 
@@ -61,7 +60,7 @@ console.log("\nServer: " + appEnv.url + '\n');
     }};
   var http = require("https");
   var input = 'JustinBieber';
-  var options = 'https://821f292fdc3ca76b1a542b7edfd52ea9:AhzRt1NRAW@cdeservice.mybluemix.net:443/api/v1/messages/search?q=' + input + '&from=11' + '&size=500';
+  var options = 'https://821f292fdc3ca76b1a542b7edfd52ea9:AhzRt1NRAW@cdeservice.mybluemix.net:443/api/v1/messages/search?q=' + input + '&from=200' + '&size=500';
   var eventDate = new Date("2015-06-06T09:00:00.000Z");
   var eventEndDate = new Date("2015-06-07T18:00:00.000Z");
   var countryFilter = 'United States';
