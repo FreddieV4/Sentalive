@@ -14,4 +14,4 @@ This Node.js app was built for [AngelHack Boston 2015](http://www.hackathon.io/a
 
 ## Collaborators
 
-[Connor Menard](https://github.com/connormenard) || [Thomas Pinella](https://github.com/thomaspinella) || [Sergey Kostenko](https://github.com/SergeyKstnko)
+[Connor Menard](https://github.com/connormenard) || [Thomas Pinella](https://github.com/thomaspinella) || [Sergey Kostenko](https://github.com/SergeyKstnko) || [Freddie Vargus](https://github.com/FreddieV4)
